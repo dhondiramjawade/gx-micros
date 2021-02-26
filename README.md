@@ -8,7 +8,7 @@ This project was generated using [Nx](https://nx.dev).
 
 # NX with Node Micro-services Using Docker
 
-configured deploy target in workspace json to deploy just run 
+Configured deploy target in workspace json to deploy just run 
 
 `nx deploy app-name`
 
