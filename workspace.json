@@ -20,10 +20,12 @@
             "tsConfig": "apps/api/tsconfig.app.json",
             "assets": ["apps/api/src/assets"]
           },
+          "generatePackageJson": true,
           "configurations": {
             "production": {
               "optimization": true,
               "extractLicenses": true,
+              "generatePackageJson": true,
               "inspect": false,
               "fileReplacements": [
                 {
@@ -32,6 +34,16 @@
                 }
               ]
             }
+          }
+        },
+        "deploy": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx build api --prod",
+              "docker build -f ./apps/api/Dockerfile . -t api"
+            ],
+            "parallel": false
           }
         },
         "serve": {
@@ -51,6 +63,140 @@
           "outputs": ["coverage/apps/api"],
           "options": {
             "jestConfig": "apps/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "html": {
+      "root": "apps/html",
+      "sourceRoot": "apps/html/src",
+      "projectType": "application",
+      "prefix": "html",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/html",
+            "main": "apps/html/src/main.ts",
+            "tsConfig": "apps/html/tsconfig.app.json",
+            "assets": ["apps/html/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "generatePackageJson": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/html/src/environments/environment.ts",
+                  "with": "apps/html/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "deploy": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx build html --prod",
+              "docker build -f ./apps/html/Dockerfile . -t html"
+            ],
+            "parallel": false
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "html:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/html/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/html"],
+          "options": {
+            "jestConfig": "apps/html/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "temp": {
+      "root": "micros/temp",
+      "sourceRoot": "micros/temp/src",
+      "projectType": "application",
+      "prefix": "temp",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/micros/temp",
+            "main": "micros/temp/src/main.ts",
+            "tsConfig": "micros/temp/tsconfig.app.json",
+            "assets": ["micros/temp/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "micros/temp/src/environments/environment.ts",
+                  "with": "micros/temp/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "temp:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["micros/temp/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/micros/temp"],
+          "options": {
+            "jestConfig": "micros/temp/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "todos": {
+      "root": "libs/todos",
+      "sourceRoot": "libs/todos/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/todos/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/todos"],
+          "options": {
+            "jestConfig": "libs/todos/jest.config.js",
             "passWithNoTests": true
           }
         }

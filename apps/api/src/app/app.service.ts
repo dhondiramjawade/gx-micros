@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-
+import { Todo } from "@gx/todos";
 @Injectable()
 export class AppService {
-  getData(): { message: string } {
-    return { message: 'Welcome to api!' };
+  getData(): Todo[] {
+    return [{ message: "Take out trash", done: false },
+    { message: "Apply for xyz", done: false }];
   }
 }
